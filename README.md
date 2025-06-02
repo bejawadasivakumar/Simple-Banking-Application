@@ -21,7 +21,7 @@ A simple banking application built with Spring Boot. This project allows users t
 
 ## 📁 Project Structure
 
-com.example.demo
+```com.example.demo
 ├── Controller/
 │ └── AccountController.java
 ├── Model/
@@ -34,4 +34,4 @@ com.example.demo
 │ └── TransactionRepository.java
 ├── Service/
 │ └── AccountService.java
-└── SimpleBankingApplication.java
+└── SimpleBankingApplication.java```
