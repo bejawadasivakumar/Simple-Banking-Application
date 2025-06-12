@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -126,6 +127,15 @@ public class AccountController {
            descending order (i.e., most recent transactions first).
 	     */
 		
+	}
+	@DeleteMapping("/deleteAccount/{accountnumber}")
+	public ResponseEntity<String> delete(@PathVariable String accountnumber){
+		AccountDetails account = accountService.getAccountDetailsByAccountnumber(accountnumber);
+		if(account != null) {
+			accountService.deleteAccount(accountnumber);
+		return new ResponseEntity<>("Account deleted successfully!!!", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>("Account doesn't exist in the Database",HttpStatus.NOT_FOUND);
 	}
 }
 

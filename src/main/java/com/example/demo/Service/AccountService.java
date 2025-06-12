@@ -88,4 +88,10 @@ public class AccountService {
 		AccountDetails account = accountRepository.findByAccountnumber(accountnumber);
 		return account.getBalance();
 	}
+	
+	// delete the Account details in the DB through accountnumber
+	public void deleteAccount(String accountnumber) {
+		AccountDetails accountDetails = accountRepository.findByAccountnumber(accountnumber);
+		accountRepository.delete(accountDetails);
+	}
 }
