@@ -133,7 +133,7 @@ public class AccountController {
 		AccountDetails account = accountService.getAccountDetailsByAccountnumber(accountnumber);
 		if(account != null) {
 			accountService.deleteAccount(accountnumber);
-		return new ResponseEntity<>("Account deleted successfully!!!", HttpStatus.OK);
+		return new ResponseEntity<>("Account deleted successfully!!!", HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>("Account doesn't exist in the Database",HttpStatus.NOT_FOUND);
 	}
