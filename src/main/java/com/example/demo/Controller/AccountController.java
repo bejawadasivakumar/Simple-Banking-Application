@@ -131,9 +131,9 @@ public class AccountController {
 	@DeleteMapping("/deleteAccount/{accountnumber}")
 	public ResponseEntity<String> delete(@PathVariable String accountnumber){
 		AccountDetails account = accountService.getAccountDetailsByAccountnumber(accountnumber);
-		accountService.deleteAccount(accountnumber);
 		if(account != null) {
-		return new ResponseEntity<>("Account deleted successfully!!!", HttpStatus.NO_CONTENT);
+			accountService.deleteAccount(accountnumber);
+		return new ResponseEntity<>("Account deleted successfully!!!", HttpStatus.OK);
 		}
 		return new ResponseEntity<>("Account doesn't exist in the Database",HttpStatus.NOT_FOUND);
 	}
