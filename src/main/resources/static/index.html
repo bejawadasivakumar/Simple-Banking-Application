@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Banking App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #007BFF;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .module {
+      background: white;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .module:hover {
+      transform: scale(1.05);
+    }
+
+    .module img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+
+    .page {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    button, input, select {
+      padding: 10px;
+      margin: 8px 0;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #28a745;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .back-btn {
+      background: #dc3545;
+      margin-top: 20px;
+    }
+
+    .response, pre {
+      background: #eef;
+      padding: 10px;
+      border-left: 4px solid #007BFF;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Banking Application</h1>
+
+    <!-- Homepage Modules -->
+    <div id="home" class="grid">
+      <div class="module" onclick="showPage('createAccount')">
+        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Create Account">
+        <div>Create Account</div>
+      </div>
+      <div class="module" onclick="showPage('allAccounts')">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="All Accounts">
+        <div>All Accounts</div>
+      </div>
+      <div class="module" onclick="showPage('accountDetails')">
+        <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png" alt="Account Details">
+        <div>Account Details</div>
+      </div>
+      <div class="module" onclick="showPage('transaction')">
+        <img src="https://cdn-icons-png.flaticon.com/512/2620/2620954.png" alt="Transaction">
+        <div>Deposit / Withdraw</div>
+      </div>
+      <div class="module" onclick="showPage('balance')">
+        <img src="https://cdn-icons-png.flaticon.com/512/3106/3106770.png" alt="Check Balance">
+        <div>Check Balance</div>
+      </div>
+      <div class="module" onclick="showPage('statement')">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Statement">
+        <div>Mini Statement</div>
+      </div>
+      <div class="module" onclick="showPage('delete')">
+        <img src="https://cdn-icons-png.flaticon.com/512/484/484662.png" alt="Delete">
+        <div>Delete Account</div>
+      </div>
+    </div>
+
+    <!-- Create Account Page -->
+    
+    <div id="createAccount" class="page">
+    <div class="top-right">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+  </div>
+      <h2>Create Account</h2>
+      <form id="createForm">
+        <input type="text" id="fullname" placeholder="Full Name" required>
+        <input type="text" id="phone" placeholder="Phone" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <button type="submit">Create</button>
+      </form>
+      <div class="response" id="createResp"></div>
+      
+    </div>
+    <!--All Accounts Page -->
+    
+    <div id="allAccounts" class="page">
+  <button class="back-btn" onclick="goHome()">← Back</button>
+  <h2>All Accounts</h2>
+  <div class="response" id="allAccountsResp"></div>
+</div>
+
+    <!--Account Details by Account Number -->
+    
+    <div id="accountDetails" class="page">
+  <button class="back-btn" onclick="goHome()">← Back</button>
+  <h2>Account Details</h2>
+  <input type="text" id="detailAccNo" placeholder="Enter Account Number" />
+  <button onclick="getAccountDetails()">Get Details</button>
+  <div class="response" id="accountDetailResp"></div>
+</div>
+
+    <!-- Deposit / Withdraw Page  -->
+    
+    <div id="transaction" class="page">
+  <button class="back-btn" onclick="goHome()">← Back</button>
+  <h2>Deposit / Withdraw</h2>
+  <input type="text" id="transAccNo" placeholder="Account Number" />
+  <input type="number" id="transAmount" placeholder="Amount" />
+  <select id="transType">
+    <option value="deposit">Deposit</option>
+    <option value="withdraw">Withdraw</option>
+  </select>
+  <button onclick="makeTransaction()">Submit</button>
+  <div class="response" id="transactionResp"></div>
+</div>
+    
+    <!-- Check Balance -->
+    
+    <div id="balance" class="page">
+  <button class="back-btn" onclick="goHome()">← Back</button>
+  <h2>Check Balance</h2>
+  <input type="text" id="balanceAccNo" placeholder="Enter Account Number" />
+  <button onclick="checkBalance()">Check</button>
+  <div class="response" id="balanceResp"></div>
+</div>
+    
+    <!-- Mini Statement -->
+    
+    <div id="statement" class="page">
+  <button class="back-btn" onclick="goHome()">← Back</button>
+  <h2>Mini Statement</h2>
+  <input type="text" id="stmtAccNo" placeholder="Enter Account Number" />
+  <button onclick="getMiniStatement()">View Statement</button>
+  <pre id="stmtResp"></pre>
+</div>
+    
+    <!--  Delete Account -->
+    
+    <div id="delete" class="page">
+  <button class="back-btn" onclick="goHome()">← Back</button>
+  <h2>Delete Account</h2>
+  <input type="text" id="deleteAccNo" placeholder="Enter Account Number" />
+  <button onclick="deleteAccount()">Delete</button>
+  <div class="response" id="deleteResp"></div>
+</div>
+
+  </div>
+
+
+
+  <script>
+    const BASE_URL = "http://localhost:9393/api";
+
+    function showPage(id) {
+      document.getElementById("home").style.display = "none";
+      document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+      document.getElementById(id).style.display = "block";
+    }
+
+    function goHome() {
+      document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+      document.getElementById("home").style.display = "grid";
+    }
+
+    document.getElementById("createForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const body = {
+        fullname: document.getElementById("fullname").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value,
+      };
+      const res = await fetch(`${BASE_URL}/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      document.getElementById("createResp").innerHTML = `
+        <strong>Account No:</strong> ${data.accountnumber} <br>
+        <strong>Name:</strong> ${data.fullname} <br>
+        <strong>Email:</strong> ${data.email} <br>
+        <strong>Phone:</strong> ${data.phone} <br>
+        <strong>Balance:</strong> ₹${data.balance}
+      `;
+    });
+    
+    async function getAllAccounts() {
+    	  const res = await fetch(`${BASE_URL}/getDetails`);
+    	  const data = await res.json();
+
+    	  if (data.length === 0) {
+    	    document.getElementById("allAccountsResp").innerHTML = "No accounts found.";
+    	    return;
+    	  }
+
+    	  let table = `
+    	    <table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse:collapse;">
+    	      <thead style="background-color:#007BFF; color:white;">
+    	        <tr>
+    	          <th>Account Number</th>
+    	          <th>Full Name</th>
+    	          <th>Email</th>
+    	          <th>Phone</th>
+    	          <th>Balance (₹)</th>
+    	        </tr>
+    	      </thead>
+    	      <tbody>
+    	  `;
+
+    	  table += data.map(acc => `
+    	    <tr>
+    	      <td>${acc.accountnumber}</td>
+    	      <td>${acc.fullname}</td>
+    	      <td>${acc.email}</td>
+    	      <td>${acc.phone}</td>
+    	      <td>${acc.balance.toFixed(2)}</td>
+    	    </tr>
+    	  `).join('');
+
+    	  table += `</tbody></table>`;
+
+    	  document.getElementById("allAccountsResp").innerHTML = table;
+    	}
+
+
+    	function showPage(id) {
+    	  document.getElementById("home").style.display = "none";
+    	  document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+    	  document.getElementById(id).style.display = "block";
+
+    	  if (id === "allAccounts") getAllAccounts();
+    	}
+
+    	async function getAccountDetails() {
+    	  const accNo = document.getElementById("detailAccNo").value;
+    	  const res = await fetch(`${BASE_URL}/AccountDetails/${accNo}`);
+    	  const text = await res.text();
+    	  try {
+    	    const data = JSON.parse(text);
+    	    document.getElementById("accountDetailResp").innerHTML = `
+    	      <strong>Account No:</strong> ${data.accountnumber}<br>
+    	      <strong>Name:</strong> ${data.fullname}<br>
+    	      <strong>Email:</strong> ${data.email}<br>
+    	      <strong>Phone:</strong> ${data.phone}<br>
+    	      <strong>Balance:</strong> ₹${data.balance}<br>
+    	    `;
+    	  } catch {
+    	    document.getElementById("accountDetailResp").innerText = text;
+    	  }
+    	}
+
+    	async function makeTransaction() {
+    	  const accNo = document.getElementById("transAccNo").value;
+    	  const amount = document.getElementById("transAmount").value;
+    	  const type = document.getElementById("transType").value;
+    	  const res = await fetch(`${BASE_URL}/transaction?accountnumber=${accNo}&amount=${amount}&type=${type}`, { method: "POST" });
+    	  document.getElementById("transactionResp").innerText = await res.text();
+    	}
+
+    	async function checkBalance() {
+    	  const accNo = document.getElementById("balanceAccNo").value;
+    	  const res = await fetch(`${BASE_URL}/CurrentBalance/${accNo}`, { method: "POST" });
+    	  document.getElementById("balanceResp").innerText = await res.text();
+    	}
+
+    	async function getMiniStatement() {
+    		  const accNo = document.getElementById("stmtAccNo").value;
+    		  const res = await fetch(`${BASE_URL}/mini-statement/${accNo}`);
+    		  const data = await res.json();
+
+    		  const stmtResp = document.getElementById("stmtResp");
+    		  stmtResp.innerHTML = ''; // Clear previous content
+
+    		  if (Array.isArray(data)) {
+    		    if (data.length === 0) {
+    		      stmtResp.innerText = "No transactions found.";
+    		      return;
+    		    }
+    		    // Create table
+    		    const table = document.createElement("table");
+    		    table.border = "1";
+    		    table.style.width = "100%";
+    		    table.style.borderCollapse = "collapse";
+
+    		    // Create header row
+    		    const header = table.insertRow();
+    		    ["Type", "Amount (₹)", "Date & Time"].forEach(text => {
+    		      const th = document.createElement("th");
+    		      th.innerText = text;
+    		      th.style.padding = "8px";
+    		      th.style.backgroundColor = "#f2f2f2";
+    		      th.style.border = "1px solid #ccc";
+    		      header.appendChild(th);
+    		    });
+
+    		    // Add transaction rows
+    		    data.forEach(t => {
+    		      const row = table.insertRow();
+    		      row.insertCell().innerText = t.type.toUpperCase();
+    		      row.insertCell().innerText = `₹${t.amount}`;
+    		      row.insertCell().innerText = new Date(t.timestamp).toLocaleString();
+    		      [...row.cells].forEach(cell => {
+    		        cell.style.padding = "8px";
+    		        cell.style.border = "1px solid #ccc";
+    		      });
+    		    });
+
+    		    stmtResp.appendChild(table);
+    		  } else {
+    		    stmtResp.innerText = data;
+    		  }
+    		}
+
+
+    	async function deleteAccount() {
+    	  const accNo = document.getElementById("deleteAccNo").value;
+    	  const res = await fetch(`${BASE_URL}/deleteAccount/${accNo}`, { method: "DELETE" });
+    	  document.getElementById("deleteResp").innerText = await res.text();
+    	}
+
+
+    // Load homepage by default
+    goHome();
+  </script>
+</body>
+</html>
