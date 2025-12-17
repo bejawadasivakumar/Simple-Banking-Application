@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import com.example.demo.Repository.TransactionRepository;
 @Service
 public class AccountService {
 	
+	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
+	
 	@Autowired
 	private AccountRepository accountRepository;
 	
@@ -25,18 +29,34 @@ public class AccountService {
 	
 	//Creating the Account
 	public AccountDetails createAccount(AccountDto dto) {
+		try {
 		AccountDetails account = new AccountDetails();
 		account.setFullname(dto.getFullname());
 		account.setEmail(dto.getEmail());
 		account.setPhone(dto.getPhone());
 		account.setAccountnumber(generateUniqueAccountNo());
 		account.setBalance(0.0);
+		AccountDetails saved = accountRepository.save(account);
+		logger.info("Account created successfully with account number: {}", saved.getAccountnumber());
 		return accountRepository.save(account);
+	}
+	catch(Exception e) {
+		logger.error("Error creating account", e);
+		throw e;
+	}
 	}
 
 	//Fetching the details
 	public List<AccountDetails> getAll(){
-		return accountRepository.findAll();
+		try {
+			List<AccountDetails> accounts = accountRepository.findAll();
+			logger.info("Retrieved {} accounts from database", accounts.size());
+		return accounts;
+		}
+		catch(Exception e) {
+			logger.error("Error fetching all accounts", e);
+			throw e;
+		}
 	}
 	//Generating the AccountNumber
 	private String generateUniqueAccountNo() {
@@ -93,5 +113,8 @@ public class AccountService {
 	public void deleteAccount(String accountnumber) {
 		AccountDetails accountDetails = accountRepository.findByAccountnumber(accountnumber);
 		accountRepository.delete(accountDetails);
+		//bhavani
+		
+		
 	}
 }
