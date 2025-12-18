@@ -113,7 +113,7 @@ public class AccountService {
 	public void deleteAccount(String accountnumber) {
 		AccountDetails accountDetails = accountRepository.findByAccountnumber(accountnumber);
 		accountRepository.delete(accountDetails);
-		//bhavani
+		
 		
 		
 	}

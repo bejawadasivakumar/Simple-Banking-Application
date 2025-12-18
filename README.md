@@ -18,6 +18,7 @@ A simple banking application built with Spring Boot. This project allows users t
 - View Account Details
 - Check Current Balance
 - View Mini Statement (Transaction History)
+- Delete the Account
 
 ## 📁 Project Structure
 
@@ -46,5 +47,6 @@ GET	         /api/AccountDetails/{accountnumber}      	  Get details of a specif
 POST	       /api/transaction	                            Perform a deposit or withdrawal
 POST	       /api/CurrentBalance/{accountnumber}	        Get current balance
 GET	         /api/mini-statement/{accountnumber}       	  Get transaction history
+DELETE       /api/deleteAccount/{accountnumber}           Delete the Existing Account
 --------------------------------------------------------------------------------------------
 
