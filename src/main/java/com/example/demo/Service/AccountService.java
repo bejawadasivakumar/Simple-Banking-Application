@@ -114,7 +114,6 @@ public class AccountService {
 		AccountDetails accountDetails = accountRepository.findByAccountnumber(accountnumber);
 		accountRepository.delete(accountDetails);
 		
-		
-		
+		//bhavani
 	}
 }
